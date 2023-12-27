@@ -82,7 +82,7 @@ namespace ReportService.Models
             }
             else
                 html += "--Brak danych do wyswietlenia--";
-            html += @"<br><br><i>Automatyczna wiadomośc wysłana z aplikacji ReportService</i>"
+            html += @"<br><br><i>Automatyczna wiadomośc wysłana z aplikacji ReportService</i>";
 
             return html;
 
