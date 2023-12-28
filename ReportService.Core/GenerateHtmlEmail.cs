@@ -1,12 +1,12 @@
-﻿using ReportService.Doamins.Models;
-using ReportService.Models.Domains;
+﻿using ReportService.Core.Domains;
+using ReportService.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReportService.Models
+namespace ReportService.Core
 {
     public class GenerateHtmlEmail
     {
@@ -50,7 +50,7 @@ namespace ReportService.Models
                 throw new ArgumentNullException( nameof(report));
 
             var html =
-                $"Raport {report.Title} z dnia {report.Date.ToString("dd-mm-yyyy")}. <br><br>";
+                $"Raport {report.Title} z dnia {report.Date.ToString("yyyy-MM-dd")}. <br><br>";
 
             if (report.Positions != null && report.Positions.Any())
             {

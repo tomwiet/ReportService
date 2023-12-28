@@ -1,11 +1,11 @@
-﻿using ReportService.Models.Domains;
+﻿using ReportService.Core.Domains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReportService.Repositories
+namespace ReportService.Core.Repositories
 {
     public class ReportRepository
     {
@@ -17,7 +17,7 @@ namespace ReportService.Repositories
             {
                 Id = 1,
                 Title = "R/1/1/2023",
-                Date = new DateTime(2023,1,1,12,0,0),
+                Date = new DateTime(2023,10,23,14,23,41),
                 Positions = new List<ReportPosition>
                 {
                     new ReportPosition

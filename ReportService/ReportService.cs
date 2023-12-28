@@ -1,6 +1,6 @@
-﻿using ReportService.Doamins.Models;
-using ReportService.Models;
-using ReportService.Repositories;
+﻿using EmailSender;
+using ReportService.Core;
+using ReportService.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +34,7 @@ namespace ReportService
             {
                 HostSmtp = "smtp.gmail.com",
                 EnableSsl = true,
+                Port = 587,
                 SenderName = "TomWiet",
                 SenderEmail = "rsmailservicesystem@gmail.com",
                 SenderEmailPassword = "cmsbsetejtjdbbvw",
@@ -84,7 +85,7 @@ namespace ReportService
             if (report == null)
                 return;
             
-            await _email.Send("Błedy w aplikacji", _htmlEmail.GenerateReports(report), _emailReceiver);
+            await _email.Send("Raport dobowy", _htmlEmail.GenerateReports(report), _emailReceiver);
 
             _reportRepository.ReportSent(report);
             Logger.Info("Report sent.");

@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReportService.Models.Domains
+namespace ReportService.Core.Domains
 {
-    public class Report
+    public class ReportPosition
     {
         public int Id { get; set; }
+        public int RaportId { get; set; }
         public string Title { get; set; }
-        public DateTime Date { get; set; }
-        public bool IsSend { get; set; }
-        public List<ReportPosition> Positions { get; set; }
+        public string Description { get; set; }
+        public decimal Value { get; set; }
+
     }
 }
