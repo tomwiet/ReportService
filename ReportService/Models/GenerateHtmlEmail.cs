@@ -44,7 +44,7 @@ namespace ReportService.Models
             return html;
         }
 
-        public string GenerateErrors(Report report)
+        public string GenerateReports(Report report)
         {
             if(report == null) 
                 throw new ArgumentNullException( nameof(report));

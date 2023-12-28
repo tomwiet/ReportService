@@ -29,7 +29,7 @@ namespace ReportService.Models
             _port = emailParams.Port;
             _senderEmail = emailParams.SenderEmail;
             _senderEmailPassword = emailParams.SenderEmailPassword;
-            _senderName = emailParams.senderName;
+            _senderName = emailParams.SenderName;
 
         }
 
