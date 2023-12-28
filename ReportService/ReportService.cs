@@ -4,6 +4,7 @@ using ReportService.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -25,21 +26,32 @@ namespace ReportService
         private ReportRepository _reportRepository = new ReportRepository();
         private Email _email;
         private GenerateHtmlEmail _htmlEmail = new GenerateHtmlEmail();
-        private string _emailReceiver = "tete10@wp.pl";
+        private string _emailReceiver;
 
         public ReportService()
         {
             InitializeComponent();
-            _email = new Email(new EmailParams
+            try
             {
-                HostSmtp = "smtp.gmail.com",
-                EnableSsl = true,
-                Port = 587,
-                SenderName = "TomWiet",
-                SenderEmail = "rsmailservicesystem@gmail.com",
-                SenderEmailPassword = "cmsbsetejtjdbbvw",
+                _emailReceiver = ConfigurationManager.AppSettings["ReceiverEmail"];
+                _email = new Email(new EmailParams
+                {
+                    HostSmtp = ConfigurationManager.AppSettings["HostSmtp"],
+                    EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["EnableSsl"]),
+                    Port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]),
+                    SenderName = ConfigurationManager.AppSettings["SenderName"],
+                    SenderEmail = ConfigurationManager.AppSettings["SenderEmail"],
+                    SenderEmailPassword = ConfigurationManager.AppSettings["SenderEmailPassword"],
 
-            });
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         protected override void OnStart(string[] args)

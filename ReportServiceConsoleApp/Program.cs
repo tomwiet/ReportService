@@ -33,7 +33,7 @@ namespace ReportServiceConsoleApp
             {
                 Id = 1,
                 Title = "R/1/1/2023",
-                Date = new DateTime(2023, 10, 23, 14, 23, 41),
+                Date = new DateTime(2023, 1, 1, 12, 0, 0),
                 Positions = new List<ReportPosition>
                 {
                     new ReportPosition
