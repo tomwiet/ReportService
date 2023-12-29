@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-﻿using Cypher.EncryptStringSample;
-=======
 ﻿using Cipher.EncryptStringSample;
->>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
-=======
-﻿using Cipher.EncryptStringSample;
->>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
 using EmailSender;
 using ReportService.Core;
 using ReportService.Core.Domains;
@@ -14,7 +6,6 @@ using ReportService.Core.Models;
 using ReportService.Core.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +16,6 @@ namespace ReportServiceConsoleApp
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-            var emailReceiver = ConfigurationManager.AppSettings["ReceiverEmail"];
-=======
-=======
->>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
             var stringCipher = new StringCipher("1");
             var encryptedPassword = stringCipher.Encrypt("hasło");
             var decriptedPassword = stringCipher.Decrypt(encryptedPassword);
@@ -43,22 +28,18 @@ namespace ReportServiceConsoleApp
             return;
             var emailReceiver = "tete10@wp.pl";
 
->>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
             var htmlEmail = new GenerateHtmlEmail();
             
             var email = new Email(new EmailParams
             {
-                HostSmtp = ConfigurationManager.AppSettings["HostSmtp"],
-                EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["EnableSsl"]),
-                Port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]),
-                SenderName = ConfigurationManager.AppSettings["SenderName"],
-                SenderEmail = ConfigurationManager.AppSettings["SenderEmail"],
-                SenderEmailPassword = DecryptSenderEmailPassword()
+                HostSmtp = "smtp.gmail.com",
+                EnableSsl = true,
+                Port = 587,
+                SenderName = "TomWiet",
+                SenderEmail = "rsmailservicesystem@gmail.com",
+                SenderEmailPassword = "cmsbsetejtjdbbvw",
 
             });
-
-            
-
             var report = new Report
             {
                 Id = 1,
@@ -108,37 +89,15 @@ namespace ReportServiceConsoleApp
                     Date = DateTime.Now,
                 }
             };
+            Console.WriteLine("Wysyłanie email (Raport dobowy....");
+            email.Send("Błedy w aplikacji", htmlEmail.GenerateErrors(error, 10), emailReceiver).Wait();
+            Console.WriteLine("Wysyłano email (Raport dobowy....");
 
-            Console.WriteLine("Wysyłanie maila z błędami...");
-            email.Send("Błedy w aplikacji", htmlEmail.GenerateErrors(error, 1), emailReceiver).Wait();
-            Console.WriteLine("Mail z błędami wysłany");
-
-            Console.WriteLine("Wysyłanie maila z raportem...");
+            Console.WriteLine("Wysyłanie email (Błedy w aplikacji....");
             email.Send("Raport dobowy", htmlEmail.GenerateReports(report), emailReceiver).Wait();
-            Console.WriteLine("Mail z raportem wysłany");
+            Console.WriteLine("Wysyłano email (Błedy w aplikacji....");
 
             Console.ReadLine();
         }
-
-        public static string DecryptSenderEmailPassword()
-        {
-            var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
-            var stringCypher = new StringCypher("002473B4-F135-40AF-B680-8BFC8F4C34B2");
-            if (encryptedPassword.StartsWith("encrypt:"))
-            {
-                encryptedPassword = stringCypher.
-                    Encrypt(encryptedPassword.Replace("encrypt:", ""));
-
-                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-                configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
-
-                configFile.Save();
-            }
-            return stringCypher.Decrypt(encryptedPassword);
-
-        }
     }
-
-
 }
