@@ -11,7 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportService.Core", "Repor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportServiceConsoleApp", "ReportServiceConsoleApp\ReportServiceConsoleApp.csproj", "{E52A1EE0-77CF-4105-8418-6E539429223A}"
 EndProject
+<<<<<<< HEAD
+<<<<<<< HEAD
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypher", "Cipher\Cypher.csproj", "{8F3093A9-B9EC-495C-A1FD-8397A02FCFF7}"
+=======
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cipher", "Cipher\Cipher.csproj", "{8F3093A9-B9EC-495C-A1FD-8397A02FCFF7}"
+>>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cipher", "Cipher\Cipher.csproj", "{8F3093A9-B9EC-495C-A1FD-8397A02FCFF7}"
+>>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

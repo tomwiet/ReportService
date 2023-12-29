@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+﻿using Cypher.EncryptStringSample;
+=======
 ﻿using Cipher.EncryptStringSample;
+>>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
 using EmailSender;
 using ReportService.Core;
 using ReportService.Core.Repositories;
@@ -21,14 +25,18 @@ namespace ReportService
         private static readonly NLog.Logger Logger 
             = NLog.LogManager.GetCurrentClassLogger();
         private int SendHour = 8;
-        private const int IntervalInMinutes = 60;
+        private const int IntervalInMinutes = 1;
         private Timer _timer = new Timer(IntervalInMinutes*60000);
         private ErrorRepository _errorRepository = new ErrorRepository();
         private ReportRepository _reportRepository = new ReportRepository();
         private Email _email;
         private GenerateHtmlEmail _htmlEmail = new GenerateHtmlEmail();
         private string _emailReceiver;
+<<<<<<< HEAD
+        private StringCypher _stringCypher = new StringCypher("002473B4-F135-40AF-B680-8BFC8F4C34B2");
+=======
         private StringCipher _stringCypher = new StringCipher("002473B4-F135-40AF-B680-8BFC8F4C34B2");
+>>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
 
         public ReportService()
         {
@@ -77,11 +85,33 @@ namespace ReportService
 
         }
 
+<<<<<<< HEAD
+        private string DecryptSenderEmailPassword()
+        {
+            var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
+
+            if (encryptedPassword.StartsWith("encrypt:"))
+            {
+                encryptedPassword = _stringCypher.
+                    Encrypt(encryptedPassword.Replace("encrypt:", ""));
+
+                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
+
+                configFile.Save();
+            }
+            return _stringCypher.Decrypt(encryptedPassword);
+
+        }
+
+=======
+>>>>>>> 3b7edae25e60fcc2582269aaab1ca6a448763e92
         protected override void OnStart(string[] args)
         {
             _timer.Elapsed += DoWork;
             _timer.Start();
-            Logger.Info("Sevice sratrted....");
+            Logger.Info("Sevice started....");
         }
 
         private async void DoWork(object sender, ElapsedEventArgs e)
