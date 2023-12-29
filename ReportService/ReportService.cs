@@ -1,4 +1,5 @@
-﻿using EmailSender;
+﻿using Cipher.EncryptStringSample;
+using EmailSender;
 using ReportService.Core;
 using ReportService.Core.Repositories;
 using System;
@@ -27,6 +28,7 @@ namespace ReportService
         private Email _email;
         private GenerateHtmlEmail _htmlEmail = new GenerateHtmlEmail();
         private string _emailReceiver;
+        private StringCipher _stringCypher = new StringCipher("002473B4-F135-40AF-B680-8BFC8F4C34B2");
 
         public ReportService()
         {
@@ -34,6 +36,8 @@ namespace ReportService
             try
             {
                 _emailReceiver = ConfigurationManager.AppSettings["ReceiverEmail"];
+
+
                 _email = new Email(new EmailParams
                 {
                     HostSmtp = ConfigurationManager.AppSettings["HostSmtp"],
@@ -41,9 +45,9 @@ namespace ReportService
                     Port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]),
                     SenderName = ConfigurationManager.AppSettings["SenderName"],
                     SenderEmail = ConfigurationManager.AppSettings["SenderEmail"],
-                    SenderEmailPassword = ConfigurationManager.AppSettings["SenderEmailPassword"],
+                    SenderEmailPassword = DecryptSenderEmailPassword()
 
-                });
+                }); ;
 
             }
             catch (Exception ex)
@@ -52,6 +56,25 @@ namespace ReportService
                 throw new Exception(ex.Message);
             }
             
+        }
+
+        private string DecryptSenderEmailPassword()
+        {
+            var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
+
+            if (encryptedPassword.StartsWith("encrypt:"))
+            {
+                encryptedPassword = _stringCypher.
+                    Encrypt(encryptedPassword.Replace("encrypt:", ""));
+
+                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
+
+                configFile.Save();
+            }
+            return _stringCypher.Decrypt(encryptedPassword);
+
         }
 
         protected override void OnStart(string[] args)
