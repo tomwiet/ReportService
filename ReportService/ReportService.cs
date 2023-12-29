@@ -20,9 +20,10 @@ namespace ReportService
     {
         private static readonly NLog.Logger Logger 
             = NLog.LogManager.GetCurrentClassLogger();
-        private int SendHour = 8;
-        private const int IntervalInMinutes = 1;
-        private Timer _timer = new Timer(IntervalInMinutes*60000);
+        private int _sendHour = 8;
+        private bool _ifSendReport;
+        private int _intervalInMinutes = 1;
+        private Timer _timer;
         private ErrorRepository _errorRepository = new ErrorRepository();
         private ReportRepository _reportRepository = new ReportRepository();
         private Email _email;
@@ -36,6 +37,12 @@ namespace ReportService
             try
             {
                 _emailReceiver = ConfigurationManager.AppSettings["ReceiverEmail"];
+                _intervalInMinutes = Convert.ToInt32(
+                            ConfigurationManager.AppSettings["IntervalInMinutes"]);
+                _timer = new Timer(_intervalInMinutes * 60000);
+                _sendHour = Convert.ToInt32(
+                            ConfigurationManager.AppSettings["SendHours"]);
+                _ifSendReport = Convert.ToBoolean(ConfigurationManager.AppSettings["IfSendReport"]);
 
 
                 _email = new Email(new EmailParams
@@ -88,8 +95,12 @@ namespace ReportService
         {
             try
             {
+                if(_ifSendReport)
+                {
+                    await SendReport();
+                }
                 await SendError();
-                await SendReport();
+                
             }
             catch (Exception ex)
             {
@@ -101,18 +112,18 @@ namespace ReportService
 
         private async Task SendError()
         {
-            var errors = _errorRepository.GetLastErrors(IntervalInMinutes);
+            var errors = _errorRepository.GetLastErrors(_intervalInMinutes);
 
             if (errors == null || !errors.Any())
                 return;
-            await _email.Send("Błedy w aplikacji", _htmlEmail.GenerateErrors(errors, IntervalInMinutes), _emailReceiver);
+            await _email.Send("Błedy w aplikacji", _htmlEmail.GenerateErrors(errors, _intervalInMinutes), _emailReceiver);
             Logger.Info("Error sent.");
         }
         private async Task SendReport()
         {
             var actualHour = DateTime.Now.Hour;
 
-            if (actualHour < SendHour)
+            if (actualHour < _sendHour)
                 return;
 
             var report = _reportRepository.GetLastNotSendReport();
