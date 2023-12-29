@@ -39,7 +39,8 @@ namespace ReportService.Core
                     ";
             }
 
-            html += @"</table><br><br><i>Automatyczna wiadomośc wysłana z aplikacji ReportService</i>";
+            html += @"</table><br><br>
+                    <i>Automatyczna wiadomośc wysłana z aplikacji ReportService</i>";
             
             return html;
         }

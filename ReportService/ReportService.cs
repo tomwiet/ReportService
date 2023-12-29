@@ -21,7 +21,7 @@ namespace ReportService
         private static readonly NLog.Logger Logger 
             = NLog.LogManager.GetCurrentClassLogger();
         private int SendHour = 8;
-        private const int IntervalInMinutes = 60;
+        private const int IntervalInMinutes = 1;
         private Timer _timer = new Timer(IntervalInMinutes*60000);
         private ErrorRepository _errorRepository = new ErrorRepository();
         private ReportRepository _reportRepository = new ReportRepository();
@@ -103,7 +103,7 @@ namespace ReportService
         {
             var errors = _errorRepository.GetLastErrors(IntervalInMinutes);
 
-            if (errors != null || !errors.Any())
+            if (errors == null || !errors.Any())
                 return;
             await _email.Send("Błedy w aplikacji", _htmlEmail.GenerateErrors(errors, IntervalInMinutes), _emailReceiver);
             Logger.Info("Error sent.");
