@@ -20,9 +20,9 @@ namespace ReportService
     {
         private static readonly NLog.Logger Logger 
             = NLog.LogManager.GetCurrentClassLogger();
-        private int _sendHour = 8;
+        private int _sendHour;
         private bool _ifSendReport;
-        private int _intervalInMinutes = 1;
+        private int _intervalInMinutes;
         private Timer _timer;
         private ErrorRepository _errorRepository = new ErrorRepository();
         private ReportRepository _reportRepository = new ReportRepository();
